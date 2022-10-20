@@ -80,7 +80,93 @@ p1 = &b;//success
 const int* const p2 = &a;  // const pointer, const data
 *p2 = 3;//fail
 p2 = &b;//fail
+```
+### detect usage errors
+```cpp
+class UserInt {
+	int num;
+public:
+	UserInt(int n):num(n) {}
+	UserInt operator* (const UserInt& a) const
+	{
+		return UserInt(num * a.num);
+	}
+};
 
+int main() {
+    UserInt a(2), b(3), c(4);
+	a * b = c; // will compile success, but it is an incorrect assignment
+    return 0;
+}
+```
+Declaring operator*’s return value const prevents it.
+```cpp
+class UserInt {
+	...
+public:
+	const UserInt operator* (const UserInt& a) const;
+};
+
+int main() {
+    UserInt a(2), b(3), c(4);
+	a * b = c; // will compile failed
+    return 0;
+}
+```
+### const Member Functions
+```cpp
+class TextBlock {
+	string text;
+public:
+	TextBlock(string tb):text(tb) {}
+	const char& operator[](size_t position) const 
+	{ 
+		return text[position];
+	} 
+	char& operator[](size_t position)
+	{
+		return text[position];
+	}
+	void print() {
+		cout << text << endl;
+	}
+};
+
+int main() {
+	TextBlock tb("Hello");
+	tb[0] = 'h';  // ok, writing a non-const variable
+	tb.print();  // change success, will print "hello"
+	const TextBlock ctb("World");
+	ctb[0] = 'w'; // compile filed, can not write a const variable
+
+    return 0;
+}
+```
+suppose we have a TextBlock-like class that stores its data as a char* instead of a string, then we create a constant object with a particular value and invoke only const member functionson it, yet we still change its value! 
+```cpp
+class CTextBlock {
+	char* pText;
+public:
+	CTextBlock(char tb[]): pText(tb) {}
+	char& operator[](size_t position) const
+	{
+		return pText[position];
+	}
+	void print() const {
+		cout << *pText << endl;
+	}
+};
+
+int main() {
+	char tb[] = "Hello";
+	const CTextBlock cctb(tb);
+	cctb.print(); // print "H"
+
+	char* pc = &cctb[0];
+	*pc = 'J';   // will change cctb variable
+	cctb.print(); // print "J"
+	return 0;
+}
 ```
 
 ## ***Item 4: Make sure that objects are initialized before they’re used.***
