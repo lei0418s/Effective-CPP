@@ -31,8 +31,7 @@ private:
     int scores[NumTurns]; // fine
 };
 ```
-in-class initialization is allowed
-only for integral types and only for constants.
+&emsp;&emsp;in-class initialization is allowed only for integral types and only for constants.
 ```cpp
 class CostEstimate {
 private:
@@ -62,7 +61,7 @@ inline void callWithMax(const T &a, const T &b)
   
 ## ***Item3: Use const whenever possible.***
 
-specify a semantic constraint — a particular object should not be modified and compilers will enforce that constraint.
+&emsp;&emsp;specify a semantic constraint — a particular object should not be modified and compilers will enforce that constraint.
 
 ### constant pointers
 ```cpp
@@ -87,8 +86,7 @@ class UserInt {
 	int num;
 public:
 	UserInt(int n):num(n) {}
-	UserInt operator* (const UserInt& a) const
-	{
+	UserInt operator* (const UserInt& a) const {
 		return UserInt(num * a.num);
 	}
 };
@@ -99,7 +97,7 @@ int main() {
     return 0;
 }
 ```
-Declaring operator*’s return value const prevents it.
+&emsp;&emsp;Declaring operator*’s return value const prevents it.
 ```cpp
 class UserInt {
 	...
@@ -119,12 +117,10 @@ class TextBlock {
 	string text;
 public:
 	TextBlock(string tb):text(tb) {}
-	const char& operator[](size_t position) const 
-	{ 
+	const char& operator[](size_t position) const { 
 		return text[position];
 	} 
-	char& operator[](size_t position)
-	{
+	char& operator[](size_t position) {
 		return text[position];
 	}
 	void print() {
@@ -142,14 +138,13 @@ int main() {
     return 0;
 }
 ```
-suppose we have a TextBlock-like class that stores its data as a char* instead of a string, then we create a constant object with a particular value and invoke only const member functionson it, yet we still change its value! 
+&emsp;&emsp;suppose we have a TextBlock-like class that stores its data as a char* instead of a string, then we create a constant object with a particular value and invoke only const member functionson it, yet we still change its value! 
 ```cpp
 class CTextBlock {
 	char* pText;
 public:
 	CTextBlock(char tb[]): pText(tb) {}
-	char& operator[](size_t position) const
-	{
+	char& operator[](size_t position) const {
 		return pText[position];
 	}
 	void print() const {
@@ -168,17 +163,122 @@ int main() {
 	return 0;
 }
 ```
+&emsp;&emsp;A member function is const if and only if it doesn’t modify any of the object’s data members (excluding those that are static)
+```cpp
+class CTextBlock {
+    char* pText;
+    size_t textLength;
+    bool lengthisValid;
+public:
+    CTextBlock(char tb[]): pText(tb), textLength(0), lengthisValid(false) {}
+
+    size_t length() const {
+        if (!lengthisValid) {
+            textLength = strlen(pText); //error: assignment of member ‘CTextBlock::textLength’ in read-only object
+            lengthisValid = true;  //error: assignment of member ‘CTextBlock::lengthisValid in read-only object
+        }
+        return textLength;
+    }
+};
+```
+&emsp;&emsp;So a const member function isn’t allowed to modify any of the non-static data members of the object on which it is invoked.
+
+&emsp;&emsp;But if the implementation of length() insists on bitwise constness. What to do?
+Use mutable：mutable frees non-static data members from the constraints of bitwise constness.
+```cpp
+class CTextBlock {
+    ...
+    mutable size_t textLength;
+    mutable bool lengthisValid;
+public:
+    ...
+    void printLen() const {
+        cout << "lengthisValid = " << lengthisValid << endl;
+        cout << "textLength = " << textLength << endl;
+        return;
+    }
+};
+int main() {
+    char tb[] = "Hello";
+	const CTextBlock ctb(tb);
+    ctb.printLen(); //lengthisValid = 0  textLength = 0
+	size_t curLen = ctb.length(); 
+	ctb.printLen(); //lengthisValid = 1 textLength = 5
+    return 0;
+}
+```
+### Avoiding Duplication in const and Non-const Member Functions
+&emsp;&emsp;In the first example in "const Member Functions", suppose that operator[] in TextBlock not only returned a reference to the appropriate character, it also performed several actions. Putting all this in both the const and the non-const
+operator[] functions yields code duplication, attendant compilation time, maintenance...
+```cpp
+class TextBlock {
+	...
+public:
+	const char& operator[](size_t position) const { 
+		...//do bounds checking
+		...//log access data
+		...//verify data integrity
+		return text[position];
+	} 
+	char& operator[](size_t position) {
+		...//do bounds checking
+		...//log access data
+		...//verify data integrity
+		return text[position];
+	}
+};
+```
+&emsp;&emsp;What you really want to do is implement operator[] functionality once and use it twice. That is, you want to have one version of operator[] call the other one. And that brings us to casting away constness.
+```cpp
+class TextBlock {
+	string text;
+public:
+	TextBlock(string tb):text(tb) {}
+	const char& operator[](size_t position) const { 
+		return text[position];
+	} 
+	char& operator[](size_t position) {
+		//use a static_cast: from a nonconst object to a const one
+		//use a const_cast: removes const
+		return const_cast<char&>(static_cast<const TextBlock&>(*this)[position]);
+	}
+	void print() const {
+		cout << text << endl;
+	}
+};
+int main() {
+	TextBlock tb("Hello");
+	tb[0] = 'h';  // non-const operator[] call const operator[]. It's OK, change success, will print "hello"
+	tb.print();  // change success, will print "hello"
+    return 0;
+}
+```
+<font color="#dd0000">**Things to Remember**</font>
+
+✦ Declaring something const helps compilers detect usage errors. const can be applied to objects at any scope, to function parameters and return types, and to member functions as a whole.
+
+✦ Compilers enforce bitwise constness, but you should program using logical constness.
+
+✦ When const and non-const member functions have essentially identical implementations, code duplication can be avoided by having the non-const version call the const version.
 
 ## ***Item 4: Make sure that objects are initialized before they’re used.***
 
 ### built-in types initialization
 &emsp;&emsp;In C++, built-in types are inherited from C, and C has no initial value. When defining a variable, it must be initialized, or its initial value will generally be junk and lead to undefined behavior.
 
+&emsp;&emsp;In general, if you’re in the C part of C++ (see Item 1) and initialization would probably incur a runtime cost, it’s not guaranteed to take place. If you cross into the non-C parts of C++, things sometimes change. This explains why an array (from the C part of C++) isn’t necessarily guaranteed to have its contents initialized, but a vector (from the STL part of C++) is.
+```cpp
+int arr[2];
+vector<int> vec(2);
+cout << arr[0] << ' ' << arr[1] << endl;  //no initial value, output two random value
+cout << vec[0] << ',' << vec[1] << endl;  //initialized, output 0,0
+```
+
 ### Class initialization
 &emsp;&emsp;The responsibility for initialization falls on
 constructors.Make sure that each constructor initializes every member of the object. It is important not to confuse assignment with initialization.
 ```cpp
-class ABEntry{
+class ABEntry {
 public:
     ABEntry(const string &name, const string &address,const list<PhoneNumber> &phones);
 private:
@@ -188,8 +288,7 @@ private:
     int numTimesConsulted;	//built-in types
 };
 
-ABEntry::ABEntry(const string &name, const string &address,const list<PhoneNumber> &phones)
-{
+ABEntry::ABEntry(const string &name, const string &address,const list<PhoneNumber> &phones) {
 	theName = name;       //these are all assignments
     theAddress = address; //not initializations
     thePhones = phones;
