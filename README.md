@@ -130,10 +130,12 @@ public:
 
 int main() {
 	TextBlock tb("Hello");
+	cout << tb[0];  // call non-const TextBlock::operator[], read ok
 	tb[0] = 'h';  // ok, writing a non-const variable
 	tb.print();  // change success, will print "hello"
 	const TextBlock ctb("World");
-	ctb[0] = 'w'; // compile filed, can not write a const variable
+	cout << ctb[0];  // call const TextBlock::operator[], read ok
+	ctb[0] = 'w'; // failed, can not write a const variable
 
     return 0;
 }
@@ -275,8 +277,7 @@ cout << vec[0] << ',' << vec[1] << endl;  //initialized, output 0,0
 ```
 
 ### Class initialization
-&emsp;&emsp;The responsibility for initialization falls on
-constructors.Make sure that each constructor initializes every member of the object. It is important not to confuse assignment with initialization.
+&emsp;&emsp;The responsibility for initialization falls on constructors. Make sure that each constructor initializes every member of the object. It is important not to confuse assignment with initialization.
 ```cpp
 class ABEntry {
 public:
@@ -306,8 +307,7 @@ ABEntry::ABEntry(const string &name, const string &address,const list<PhoneNumbe
 }
 ```
 ### the order in which an object’s data is initialized
-&emsp;&emsp;base classes are initialized before derived classes (see also Item 12), and within a class,
-data members are initialized in the order in which they are declared.
+&emsp;&emsp;base classes are initialized before derived classes (see also Item 12), and within a class, data members are initialized in the order in which they are declared.
 
 ### the order of initialization of non-local static objects
 Static objects:
@@ -319,16 +319,16 @@ Static objects:
   * static object declared in class, file scope
 
 ```cpp
-//a.cpp
-class A{
+// a.cpp
+class A {
 public:
     int a;
 };
 extern A AA;
-//b.cpp
-class B{
-    B()
-    {
+
+// b.cpp
+class B {
+    B() {
         b = AA.a;
     }
 public:
@@ -339,22 +339,22 @@ B BB; // Defining the global variable BB object automatically calls the construc
 ```
 Solution: replace non-local static objects with local static objects.
 ```cpp
-//a.cpp
-class A{...};
+// a.cpp
+class A {...};
 
-A& funcA(){      //replace direct accesses to non-local static objects with calls to functions that return references to local static objects
-    static A AA;
-    return AA;
+A& funcA() {      //replace direct accesses to non-local static objects with calls to functions that return references to local static objects
+    static A AA; // define and initialize a local static object
+    return AA;  //return a reference to it
 }
 
-//b.cpp
+// b.cpp
 class B{...};
 
-B::B(){                      
+B::B() {                      
     number = funcA().a;
 }
 
-B& funcB(){
+B& funcB() {
     static B BB;
     return BB;
 }
