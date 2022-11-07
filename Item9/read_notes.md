@@ -1,7 +1,7 @@
 ## ***Item9: Never call virtual functions during construction or destruction.***
 <font size="3">
 
-析构和构造函数中不要调用virtual函数，因为这类调用从不下降至derived class
+析构和构造函数中不要调用virtual函数，因为这类调用从不下降至derived class。 derived class的函数几乎必然取用 local成员变量，而那些成员变量还未被初始化。
 
 ```cpp
 class Transaction {
@@ -9,7 +9,7 @@ public:
     Transaction() { 
         logTransaction(); //基类的构造函数中调用虚函数
     }
-    //virtual void logTransaction() const = 0; //无法调用纯虚函数
+    //virtual void logTransaction() const = 0; //无法调用纯虚函数，连接器找不到必要的 Transaction::logTransaction 实现代码
     virtual void logTransaction() const {
         cout <<"logTransaction log"<<endl;
     }
@@ -44,7 +44,7 @@ public:
         logTransaction(logInfo);
     }
     void logTransaction(const string& logInfo) const {
-        cout <<logInfo<<endl;
+        cout << logInfo << endl;
     }
 };
 
