@@ -11,6 +11,14 @@
 
 [Rule 05. Floating Point (FLP)](#rule05)
 
+[Rule 06. Arrays (ARR)](#rule06)
+
+[Rule 07. Characters and Strings (STR)](#rule07)
+
+[Rule 08. Memory Management (MEM)](#rule08)
+
+[Rule 09. Input Output (FIO)](#rule09)
+
 <a id="rule01"></a>
 ## Rule 01. Preprocessor (PRE)
 <table>
@@ -554,6 +562,144 @@ void func(unsigned int ui_a, unsigned int ui_b) {
 <td></td>
 <td></td>
 </tr>
+</table>
+
+[Back to top](#rule)
+
+<a id="rule06"></a>
+## Rule 06. Arrays (ARR)
+<table>
+<tr>
+<td> Rule </td> <td> Description </td><td> Noncompliant Code Example </td>
+</tr>
+
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/ARR30-C.+Do+not+form+or+use+out-of-bounds+pointers+or+array+subscripts" target="_blank">ARR30-C. Do not form or use out-of-bounds pointers or array subscripts</a> </td>
+<td></td>
+<td>Out-of-Bounds Pointer, Null Pointer Arithmetic, Using Past-the-End Index</td>
+</tr>
+
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/ARR32-C.+Ensure+size+arguments+for+variable+length+arrays+are+in+a+valid+range" target="_blank">ARR32-C. Ensure size arguments for variable length arrays are in a valid range</a> </td>
+<td>ensures the size argument used to allocate vla is in a valid range (between 1 and a programmer-defined maximum); otherwise, it uses an algorithm that relies on dynamic memory allocation. </td>
+<td></td>
+</tr>
+
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/ARR36-C.+Do+not+subtract+or+compare+two+pointers+that+do+not+refer+to+the+same+array" target="_blank">ARR36-C. Do not subtract or compare two pointers that do not refer to the same array</a> </td>
+<td>When two pointers are subtracted, both must point to elements of the same array object or just one past the last element of the array object; the result is the difference of the subscripts of the two array elements. Otherwise, the operation is undefined behavior.</td>
+<td></td>
+</tr>
+
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/ARR37-C.+Do+not+add+or+subtract+an+integer+to+a+pointer+to+a+non-array+object" target="_blank">ARR37-C. Do not add or subtract an integer to a pointer to a non-array object</a> </td>
+<td>Pointer arithmetic must be performed only on pointers that reference elements of array objects.</td>
+<td></td>
+</tr>
+
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/ARR38-C.+Guarantee+that+library+functions+do+not+form+invalid+pointers" target="_blank">ARR38-C. Guarantee that library functions do not form invalid pointers</a> </td>
+<td>it is undefined behavior if the "pointer passed to a library function array parameter does not have a value such that all address computations and object accesses are valid."</td>
+<td></td>
+</tr>
+</table>
+
+[Back to top](#rule)
+
+<a id="rule07"></a>
+## Rule 07. Characters and Strings (STR)
+<table>
+<tr>
+<td> Rule </td> <td> Description </td><td> Noncompliant Code Example </td> <td> Compliant Solution </td>
+</tr>
+
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/STR30-C.+Do+not+attempt+to+modify+string+literals" target="_blank">STR30-C. Do not attempt to modify string literals</a> </td>
+<td>Modifying a string literal frequently results in an access violation because string literals are typically stored in read-only memory.</td>
+<td>
+
+```c
+char *str  = "string literal";
+str[0] = 'S';
+```
+</td>
+<td>
+
+```c
+char str[]  = "string literal";
+str[0] = 'S';
+```
+</td>
+</tr>
+
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/STR31-C.+Guarantee+that+storage+for+strings+has+sufficient+space+for+character+data+and+the+null+terminator" target="_blank">STR31-C. Guarantee that storage for strings has sufficient space for character data and the null terminator</a> </td>
+<td>Copying data to a buffer that is not large enough to hold that data results in a buffer overflow. </td>
+<td></td>
+<td></td>
+</tr>
+
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/STR32-C.+Do+not+pass+a+non-null-terminated+character+sequence+to+a+library+function+that+expects+a+string" target="_blank">STR32-C. Do not pass a non-null-terminated character sequence to a library function that expects a string</a> </td>
+<td>Passing a character sequence or wide character sequence that is not null-terminated to such a function can result in accessing memory that is outside the bounds of the object. </td>
+<td>
+
+```c
+char c_str[3] = "abc";
+printf("%s\n", c_str);
+```
+</td>
+<td>
+
+```c
+char c_str[] = "abc";
+printf("%s\n", c_str);
+```
+</td>
+</tr>
+
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/STR34-C.+Cast+characters+to+unsigned+char+before+converting+to+larger+integer+sizes" target="_blank">STR34-C. Cast characters to unsigned char before converting to larger integer sizes</a> </td>
+<td>Signed character data must be converted to unsigned char before being assigned or converted to a larger signed type.</td>
+<td>???</td>
+<td></td>
+</tr>
+
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/STR37-C.+Arguments+to+character-handling+functions+must+be+representable+as+an+unsigned+char" target="_blank">STR37-C. Arguments to character-handling functions must be representable as an unsigned char</a> </td>
+<td>???</td>
+<td></td>
+<td></td>
+</tr>
+
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/STR38-C.+Do+not+confuse+narrow+and+wide+character+strings+and+functions" target="_blank">STR38-C. Do not confuse narrow and wide character strings and functions</a> </td>
+<td>Passing narrow string arguments to wide string functions or wide string arguments to narrow string functions can lead to unexpected and undefined behavior. Scaling problems are likely because of the difference in size between wide and narrow characters. </td>
+<td>char/wchar wcsncpy()/strncpy() </td>
+<td></td>
+</tr>
+</table>
+
+[Back to top](#rule)
+
+<a id="rule08"></a>
+## Rule 08. Memory Management (MEM)
+<table>
+<tr>
+<td> Rule </td> <td> Description </td><td> Noncompliant Code Example </td> <td> Compliant Solution </td>
+</tr>
+
+</table>
+
+[Back to top](#rule)
+
+<a id="rule09"></a>
+## Rule 09. Input Output (FIO)
+<table>
+<tr>
+<td> Rule </td> <td> Description </td><td> Noncompliant Code Example </td> <td> Compliant Solution </td>
+</tr>
+
 </table>
 
 [Back to top](#rule)
