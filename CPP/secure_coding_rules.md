@@ -19,6 +19,12 @@
 
 [Rule 09. Input Output (FIO)](#rule09)
 
+[Rule 10. Environment (ENV)](#rule10)
+
+[Rule 11. Signals (SIG)](#rule11)
+
+[Rule 12. Error Handling (ERR)](#rule12)
+
 <a id="rule01"></a>
 ## Rule 01. Preprocessor (PRE)
 <table>
@@ -688,6 +694,75 @@ printf("%s\n", c_str);
 <tr>
 <td> Rule </td> <td> Description </td><td> Noncompliant Code Example </td> <td> Compliant Solution </td>
 </tr>
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/MEM30-C.+Do+not+access+freed+memory" target="_blank">MEM30-C. Do not access freed memory</a> </td>
+<td>Evaluating a pointer—including dereferencing the pointer, using it as an operand of an arithmetic operation, type casting it, and using it as the right-hand side of an assignment—into memory that has been deallocated by a memory management function is undefined behavior. </td>
+<td></td>
+<td></td>
+</tr>
+
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/MEM31-C.+Free+dynamically+allocated+memory+when+no+longer+needed" target="_blank">MEM31-C. Free dynamically allocated memory when no longer needed</a> </td>
+<td>Before the lifetime of the last pointer that stores the return value of a call to a standard memory allocation function has ended, it must be matched by a call to free() with that pointer value.</td>
+<td>malloc();</td>
+<td>malloc(); free();</td>
+</tr>
+
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/MEM33-C.++Allocate+and+copy+structures+containing+a+flexible+array+member+dynamically" target="_blank">MEM33-C. Allocate and copy structures containing a flexible array member dynamically</a> </td>
+<td>Flexible array structures must:<br>
+1.Have dynamic storage duration (be allocated via malloc() or another dynamic allocation function)<br>
+2.Be dynamically copied using memcpy() or a similar function and not by assignment<br>
+3.When used as an argument to a function, be passed by pointer and not copied by value</td>
+<td>
+
+```c
+struct flex_array_struct {
+  size_t num;
+  int data[];
+};
+struct flex_array_struct flex_struct;
+```
+</td>
+<td>
+
+```c
+/* Dynamically allocate memory for the struct */
+flex_struct = (struct flex_array_struct *)malloc(sizeof(struct flex_array_struct) + sizeof(int) * array_size);
+```
+</td>
+</tr>
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/MEM34-C.+Only+free+memory+allocated+dynamically" target="_blank">MEM34-C. Only free memory allocated dynamically</a> </td>
+<td>Freeing memory that is not allocated dynamically can result in heap corruption and other serious errors. Do not call free() on a pointer other than one returned by a standard memory allocation function, such as malloc(), calloc(), realloc(), or aligned_alloc().</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/MEM35-C.+Allocate+sufficient+memory+for+an+object" target="_blank">MEM35-C. Allocate sufficient memory for an object</a> </td>
+<td>The types of integer expressions used as size arguments to malloc(), calloc(), realloc(), or aligned_alloc() must have sufficient range to represent the size of the objects to be stored. If size arguments are incorrect or can be manipulated by an attacker, then a buffer overflow may occur. Incorrect size arguments, inadequate range checking, integer overflow, or truncation can result in the allocation of an inadequately sized buffer.</td>
+<td>
+
+```c
+struct tm *tmb;
+tmb = (struct tm *)malloc(sizeof(tmb)); //sizeof(pointer)
+```
+</td>
+<td>
+
+```c
+struct tm *tmb;
+tmb = (struct tm *)malloc(sizeof(*tmb)); //sizeof(struct)
+```
+</td>
+</tr>
+
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/pages/viewpage.action?pageId=87152255" target="_blank">MEM36-C. Do not modify the alignment of objects by calling realloc()</a> </td>
+<td>Do not invoke realloc() to modify the size of allocated objects that have stricter alignment requirements than those guaranteed by malloc(). </td>
+<td></td>
+<td></td>
+</tr>
 
 </table>
 
@@ -700,6 +775,189 @@ printf("%s\n", c_str);
 <td> Rule </td> <td> Description </td><td> Noncompliant Code Example </td> <td> Compliant Solution </td>
 </tr>
 
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/FIO30-C.+Exclude+user+input+from+format+strings" target="_blank">Exclude user input from format strings</a> </td>
+<td>???</td>
+<td></td>
+<td></td>
+</tr>
+
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/FIO32-C.+Do+not+perform+operations+on+devices+that+are+only+appropriate+for+files" target="_blank">FIO32-C. Do not perform operations on devices that are only appropriate for files</a> </td>
+<td>???</td>
+<td></td>
+<td></td>
+</tr>
+
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/FIO34-C.+Distinguish+between+characters+read+from+a+file+and+EOF+or+WEOF" target="_blank">FIO34-C. Distinguish between characters read from a file and EOF or WEOF</a> </td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/FIO37-C.+Do+not+assume+that+fgets%28%29+or+fgetws%28%29+returns+a+nonempty+string+when+successful" target="_blank">FIO37-C. Do not assume that fgets() or fgetws() returns a nonempty string when successful</a> </td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/FIO38-C.+Do+not+copy+a+FILE+object" target="_blank">FIO38-C. Do not copy a FILE object</a> </td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/FIO39-C.+Do+not+alternately+input+and+output+from+a+stream+without+an+intervening+flush+or+positioning+call" target="_blank">FIO39-C. Do not alternately input and output from a stream without an intervening flush or positioning call</a> </td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/FIO40-C.+Reset+strings+on+fgets%28%29++or+fgetws%28%29+failure" target="_blank">FIO40-C. Reset strings on fgets() or fgetws() failure</a> </td>
+<td>If either of the C Standard fgets() or fgetws() functions fail, the contents of the array being written is indeterminate.</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/FIO41-C.+Do+not+call+getc%28%29%2C+putc%28%29%2C+getwc%28%29%2C+or+putwc%28%29+with+a+stream+argument+that+has+side+effects" target="_blank">FIO41-C. Do not call getc(), putc(), getwc(), or putwc() with a stream argument that has side effects</a> </td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/FIO42-C.+Close+files+when+they+are+no+longer+needed" target="_blank">FIO42-C. Close files when they are no longer needed</a> </td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/pages/viewpage.action?pageId=87152071" target="_blank">FIO44-C. Only use values for fsetpos() that are returned from fgetpos()</a> </td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/pages/viewpage.action?pageId=87152071" target="_blank">FIO44-C. Only use values for fsetpos() that are returned from fgetpos()</a> </td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/FIO45-C.+Avoid+TOCTOU+race+conditions+while+accessing+files" target="_blank">FIO45-C. Avoid TOCTOU race conditions while accessing files</a> </td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/FIO46-C.+Do+not+access+a+closed+file" target="_blank">FIO46-C. Do not access a closed file</a> </td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/FIO47-C.+Use+valid+format+strings" target="_blank">FIO47-C. Use valid format strings</a> </td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</table>
+
+[Back to top](#rule)
+
+
+<a id="rule10"></a>
+## Rule 10. Environment (ENV) 
+<table>
+<tr>
+<td> Rule </td> <td> Description </td>
+</tr>
+
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/ENV30-C.+Do+not+modify+the+object+referenced+by+the+return+value+of+certain+functions" target="_blank">ENV30-C. Do not modify the object referenced by the return value of certain functions</a> </td>
+<td>These functions include getenv(), setlocale(), localeconv(), asctime(), and strerror(). In such cases, the function call results must be treated as being const-qualified.</td>
+</tr>
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/ENV31-C.+Do+not+rely+on+an+environment+pointer+following+an+operation+that+may+invalidate+it" target="_blank">ENV31-C. Do not rely on an environment pointer following an operation that may invalidate it</a> </td>
+<td></td>
+</tr>
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/ENV32-C.+All+exit+handlers+must+return+normally" target="_blank">ENV32-C. All exit handlers must return normally</a> </td>
+<td></td>
+</tr>
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/pages/viewpage.action?pageId=87152177" target="_blank">ENV33-C. Do not call system()</a> </td>
+<td></td>
+</tr>
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/ENV34-C.+Do+not+store+pointers+returned+by+certain+functions" target="_blank">ENV34-C. Do not store pointers returned by certain functions</a> </td>
+<td></td>
+</tr>
+</table>
+
+[Back to top](#rule)
+
+<a id="rule11"></a>
+## Rule 11. Signals (SIG)
+<table>
+<tr>
+<td> Rule </td> <td> Description </td>
+</tr>
+
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/SIG30-C.+Call+only+asynchronous-safe+functions+within+signal+handlers" target="_blank">SIG30-C. Call only asynchronous-safe functions within signal handlers</a>  </td>
+<td></td>
+</tr>
+
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/SIG31-C.+Do+not+access+shared+objects+in+signal+handlers" target="_blank">SIG31-C. Do not access shared objects in signal handlers</a>  </td>
+<td></td>
+</tr>
+
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/SIG34-C.+Do+not+call+signal%28%29+from+within+interruptible+signal+handlers" target="_blank">SIG34-C. Do not call signal() from within interruptible signal handlers</a>  </td>
+<td></td>
+</tr>
+
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/SIG35-C.+Do+not+return+from+a+computational+exception+signal+handler" target="_blank">SIG35-C. Do not return from a computational exception signal handler</a>  </td>
+<td></td>
+</tr>
+
+</table>
+
+[Back to top](#rule)
+
+
+<a id="rule12"></a>
+## Rule 12. Error Handling (ERR)
+<table>
+<tr>
+<td> Rule </td> <td> Description </td>
+</tr>
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/ERR30-C.+Take+care+when+reading+errno" target="_blank">ERR30-C. Take care when reading errno</a>  </td>
+<td>The value of errno is initialized to zero at program startup, It is meaningful for a program to inspect the contents of errno only after an error might have occurred.</td>
+</tr>
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/ERR32-C.+Do+not+rely+on+indeterminate+values+of+errno" target="_blank">ERR32-C. Do not rely on indeterminate values of errno</a>  </td>
+<td></td>
+</tr>
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/ERR33-C.+Detect+and+handle+standard+library+errors" target="_blank">ERR33-C. Detect and handle standard library errors</a>  </td>
+<td>Assuming that all calls to such functions will succeed and failing to check the return value for an indication of an error is a dangerous practice that may lead to unexpected or undefined behavior when an error occurs. </td>
+</tr>
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/ERR34-C.+Detect+errors+when+converting+a+string+to+a+number" target="_blank">ERR34-C. Detect errors when converting a string to a number</a>  </td>
+<td></td>
+</tr>
 </table>
 
 [Back to top](#rule)
