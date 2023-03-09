@@ -27,6 +27,10 @@
 
 [Rule 14. Concurrency (CON)](#rule14)
 
+[Rule 48. Miscellaneous (MSC)](#rule48)
+
+[Rule 51. Microsoft Windows (WIN)](#rule51)
+
 <a id="rule01"></a>
 ## Rule 01. Preprocessor (PRE)
 <table>
@@ -434,14 +438,14 @@ if (a = b) {
 
 <tr>
 <td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/EXP46-C.+Do+not+use+a+bitwise+operator+with+a+Boolean-like+operand" target="_blank">EXP46-C. Do not use a bitwise operator with a Boolean-like operand</a> </td>
-<td> Description </td>
+<td> </td>
 <td></td>
 <td></td>
 </tr>
 
 <tr>
 <td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/EXP47-C.+Do+not+call+va_arg+with+an+argument+of+the+incorrect+type" target="_blank">EXP47-C. Do not call va_arg with an argument of the incorrect type</a> </td>
-<td> Description </td>
+<td> </td>
 <td></td>
 <td></td>
 </tr>
@@ -533,42 +537,37 @@ void func(unsigned int ui_a, unsigned int ui_b) {
 ## Rule 05. Floating Point (FLP) (PRE)
 <table>
 <tr>
-<td> Rule </td> <td> Description </td><td> Noncompliant Code Example </td> <td> Compliant Solution </td>
+<td> Rule </td> <td> Description </td>
 </tr>
 
 <tr>
 <td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/FLP30-C.+Do+not+use+floating-point+variables+as+loop+counters" target="_blank">FLP30-C. Do not use floating-point variables as loop counters</a> </td>
 <td></td>
-<td></td>
-<td></td>
+
 </tr>
 
 <tr>
 <td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/FLP32-C.+Prevent+or+detect+domain+and+range+errors+in+math+functions" target="_blank">FLP32-C. Prevent or detect domain and range errors in math functions</a> </td>
 <td>A domain error occurs if an input argument is outside the domain over which the mathematical function is defined.</td>
-<td></td>
-<td></td>
+
 </tr>
 
 <tr>
 <td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/FLP34-C.+Ensure+that+floating-point+conversions+are+within+range+of+the+new+type" target="_blank">FLP34-C. Ensure that floating-point conversions are within range of the new type</a> </td>
 <td></td>
-<td></td>
-<td></td>
+
 </tr>
 
 <tr>
 <td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/FLP36-C.+Preserve+precision+when+converting+integral+values+to+floating-point+type" target="_blank">FLP36-C. Preserve precision when converting integral values to floating-point type</a> </td>
 <td></td>
-<td></td>
-<td></td>
+
 </tr>
 
 <tr>
 <td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/FLP37-C.+Do+not+use+object+representations+to+compare+floating-point+values" target="_blank">FLP37-C. Do not use object representations to compare floating-point values</a> </td>
 <td></td>
-<td></td>
-<td></td>
+
 </tr>
 </table>
 
@@ -669,13 +668,13 @@ printf("%s\n", c_str);
 <tr>
 <td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/STR34-C.+Cast+characters+to+unsigned+char+before+converting+to+larger+integer+sizes" target="_blank">STR34-C. Cast characters to unsigned char before converting to larger integer sizes</a> </td>
 <td>Signed character data must be converted to unsigned char before being assigned or converted to a larger signed type.</td>
-<td>???</td>
+<td></td>
 <td></td>
 </tr>
 
 <tr>
 <td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/STR37-C.+Arguments+to+character-handling+functions+must+be+representable+as+an+unsigned+char" target="_blank">STR37-C. Arguments to character-handling functions must be representable as an unsigned char</a> </td>
-<td>???</td>
+<td></td>
 <td></td>
 <td></td>
 </tr>
@@ -774,100 +773,73 @@ tmb = (struct tm *)malloc(sizeof(*tmb)); //sizeof(struct)
 ## Rule 09. Input Output (FIO)
 <table>
 <tr>
-<td> Rule </td> <td> Description </td><td> Noncompliant Code Example </td> <td> Compliant Solution </td>
+<td> Rule </td> <td> Description </td>
 </tr>
 
 <tr>
 <td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/FIO30-C.+Exclude+user+input+from+format+strings" target="_blank">Exclude user input from format strings</a> </td>
-<td>???</td>
 <td></td>
-<td></td>
+
 </tr>
 
 <tr>
 <td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/FIO32-C.+Do+not+perform+operations+on+devices+that+are+only+appropriate+for+files" target="_blank">FIO32-C. Do not perform operations on devices that are only appropriate for files</a> </td>
-<td>???</td>
-<td></td>
 <td></td>
 </tr>
 
 <tr>
 <td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/FIO34-C.+Distinguish+between+characters+read+from+a+file+and+EOF+or+WEOF" target="_blank">FIO34-C. Distinguish between characters read from a file and EOF or WEOF</a> </td>
 <td></td>
-<td></td>
-<td></td>
 </tr>
 
 <tr>
 <td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/FIO37-C.+Do+not+assume+that+fgets%28%29+or+fgetws%28%29+returns+a+nonempty+string+when+successful" target="_blank">FIO37-C. Do not assume that fgets() or fgetws() returns a nonempty string when successful</a> </td>
-<td></td>
-<td></td>
 <td></td>
 </tr>
 
 <tr>
 <td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/FIO38-C.+Do+not+copy+a+FILE+object" target="_blank">FIO38-C. Do not copy a FILE object</a> </td>
 <td></td>
-<td></td>
-<td></td>
 </tr>
 
 <tr>
 <td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/FIO39-C.+Do+not+alternately+input+and+output+from+a+stream+without+an+intervening+flush+or+positioning+call" target="_blank">FIO39-C. Do not alternately input and output from a stream without an intervening flush or positioning call</a> </td>
-<td></td>
-<td></td>
 <td></td>
 </tr>
 
 <tr>
 <td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/FIO40-C.+Reset+strings+on+fgets%28%29++or+fgetws%28%29+failure" target="_blank">FIO40-C. Reset strings on fgets() or fgetws() failure</a> </td>
 <td>If either of the C Standard fgets() or fgetws() functions fail, the contents of the array being written is indeterminate.</td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/FIO41-C.+Do+not+call+getc%28%29%2C+putc%28%29%2C+getwc%28%29%2C+or+putwc%28%29+with+a+stream+argument+that+has+side+effects" target="_blank">FIO41-C. Do not call getc(), putc(), getwc(), or putwc() with a stream argument that has side effects</a> </td>
-<td></td>
-<td></td>
 <td></td>
 </tr>
 
 <tr>
 <td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/FIO42-C.+Close+files+when+they+are+no+longer+needed" target="_blank">FIO42-C. Close files when they are no longer needed</a> </td>
 <td></td>
-<td></td>
-<td></td>
 </tr>
 
 <tr>
 <td> <a href= "https://wiki.sei.cmu.edu/confluence/pages/viewpage.action?pageId=87152071" target="_blank">FIO44-C. Only use values for fsetpos() that are returned from fgetpos()</a> </td>
 <td></td>
-<td></td>
-<td></td>
 </tr>
 
 <tr>
 <td> <a href= "https://wiki.sei.cmu.edu/confluence/pages/viewpage.action?pageId=87152071" target="_blank">FIO44-C. Only use values for fsetpos() that are returned from fgetpos()</a> </td>
-<td></td>
-<td></td>
 <td></td>
 </tr>
 <tr>
 <td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/FIO45-C.+Avoid+TOCTOU+race+conditions+while+accessing+files" target="_blank">FIO45-C. Avoid TOCTOU race conditions while accessing files</a> </td>
 <td></td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/FIO46-C.+Do+not+access+a+closed+file" target="_blank">FIO46-C. Do not access a closed file</a> </td>
 <td></td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/FIO47-C.+Use+valid+format+strings" target="_blank">FIO47-C. Use valid format strings</a> </td>
-<td></td>
-<td></td>
 <td></td>
 </tr>
 </table>
@@ -1035,6 +1007,70 @@ Deadlock needs all four conditions, so preventing deadlock requires preventing a
 <td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/CON43-C.+Do+not+allow+data+races+in+multithreaded+code" target="_blank">CON43-C. Do not allow data races in multithreaded code</a>  </td>
 <td></td>
 </tr>
+</table>
+
+[Back to top](#rule)
+
+
+<a id="rule48"></a>
+## Rule 48. Miscellaneous (MSC)
+<table>
+<tr>
+<td> Rule </td> <td> Description </td>
+</tr>
+
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/MSC30-C.+Do+not+use+the+rand%28%29+function+for+generating+pseudorandom+numbers" target="_blank">MSC30-C. Do not use the rand() function for generating pseudorandom numbers</a>  </td>
+<td>The C Standard rand() function makes no guarantees as to the quality of the random sequence produced. The numbers generated by some implementations of rand() have a comparatively short cycle and the numbers can be predictable. Applications that have strong pseudorandom number requirements must use a generator that is known to be sufficient for their needs.</td>
+</tr>
+
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/MSC32-C.+Properly+seed+pseudorandom+number+generators" target="_blank">MSC32-C. Properly seed pseudorandom number generators</a>  </td>
+<td>Calling a PRNG in the same initial state, either without seeding it explicitly or by seeding it with the same value, results in generating the same sequence of random numbers in different runs of the program. The solution is to ensure that the PRNG is always properly seeded. A properly seeded PRNG will generate a different sequence of random numbers each time it is run.</td>
+</tr>
+
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/MSC33-C.+Do+not+pass+invalid+data+to+the+asctime%28%29+function" target="_blank">MSC33-C. Do not pass invalid data to the asctime() function</a>  </td>
+<td></td>
+</tr>
+
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/MSC37-C.+Ensure+that+control+never+reaches+the+end+of+a+non-void+function" target="_blank">MSC37-C. Ensure that control never reaches the end of a non-void function</a>  </td>
+<td>If control reaches the closing curly brace (}) of a non-void function without evaluating a return statement, using the return value of the function call is undefined behavior. </td>
+</tr>
+
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/MSC38-C.+Do+not+treat+a+predefined+identifier+as+an+object+if+it+might+only+be+implemented+as+a+macro" target="_blank">MSC38-C. Do not treat a predefined identifier as an object if it might only be implemented as a macro</a>  </td>
+<td></td>
+</tr>
+
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/MSC39-C.+Do+not+call+va_arg%28%29+on+a+va_list+that+has+an+indeterminate+value" target="_blank">MSC39-C. Do not call va_arg() on a va_list that has an indeterminate value</a>  </td>
+<td></td>
+</tr>
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/MSC40-C.+Do+not+violate+constraints" target="_blank">MSC40-C. Do not violate constraints</a>  </td>
+<td></td>
+</tr>
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/MSC41-C.+Never+hard+code+sensitive+information" target="_blank">MSC41-C. Never hard code sensitive information</a>  </td>
+<td>Hard coding sensitive information, such as passwords or encryption keys can expose the information to attackers. Anyone who has access to the executable or dynamic library files can examine them for strings or other critical data, revealing the sensitive information. </td>
+</tr>
+</table>
+
+[Back to top](#rule)
+
+<a id="rule51"></a>
+## Rule 51. Microsoft Windows (WIN)
+<table>
+<tr>
+<td> Rule </td> <td> Description </td>
+</tr>
+
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/WIN30-C.+Properly+pair+allocation+and+deallocation+functions" target="_blank">WIN30-C. Properly pair allocation and deallocation functions</a></td>
+<td>malloc()--free()   realloc()--free() ...</td>
+</tr>
+
 </table>
 
 [Back to top](#rule)
