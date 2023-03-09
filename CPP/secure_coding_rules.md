@@ -25,6 +25,8 @@
 
 [Rule 12. Error Handling (ERR)](#rule12)
 
+[Rule 14. Concurrency (CON)](#rule14)
+
 <a id="rule01"></a>
 ## Rule 01. Preprocessor (PRE)
 <table>
@@ -956,6 +958,81 @@ tmb = (struct tm *)malloc(sizeof(*tmb)); //sizeof(struct)
 </tr>
 <tr>
 <td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/ERR34-C.+Detect+errors+when+converting+a+string+to+a+number" target="_blank">ERR34-C. Detect errors when converting a string to a number</a>  </td>
+<td></td>
+</tr>
+</table>
+
+[Back to top](#rule)
+
+<a id="rule14"></a>
+## Rule 14. Concurrency (CON)
+<table>
+<tr>
+<td> Rule </td> <td> Description </td>
+</tr>
+<tr>
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/CON30-C.+Clean+up+thread-specific+storage" target="_blank">CON30-C. Clean up thread-specific storage</a>  </td>
+<td>The tss_create() function creates a thread-specific storage pointer identified by a key. Threads can allocate thread-specific storage and associate the storage with a key that uniquely identifies the storage by calling the tss_set() function. If not properly freed, this memory may be leaked. Ensure that thread-specific storage is freed.</td>
+</tr>
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/CON31-C.+Do+not+destroy+a+mutex+while+it+is+locked" target="_blank">CON31-C. Do not destroy a mutex while it is locked</a>  </td>
+<td>Don not contains race conditions, do not destroy mutex before it is unlocked. Additionally, and guarantee that lock will be initialized before it is passed to mtx_lock(). </td>
+</tr>
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/CON32-C.+Prevent+data+races+when+accessing+bit-fields+from+multiple+threads" target="_blank">CON32-C. Prevent data races when accessing bit-fields from multiple threads</a>  </td>
+<td></td>
+</tr>
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/CON33-C.+Avoid+race+conditions+when+using+library+functions" target="_blank">CON33-C. Avoid race conditions when using library functions</a>  </td>
+<td>According to the C Standard, the library functions listed in the following table may contain data races when invoked by multiple threads. So, need use the corresponding thread-safe functions if existed. For example, strtok()->strtok_s()</td>
+</tr>
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/CON34-C.+Declare+objects+shared+between+threads+with+appropriate+storage+durations" target="_blank">CON34-C. Declare objects shared between threads with appropriate storage durations</a>  </td>
+<td>Do not access automatic or thread-local objects from a thread other than the one with which the object is associated.</td>
+</tr>
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/CON35-C.+Avoid+deadlock+by+locking+in+a+predefined+order" target="_blank">CON35-C. Avoid deadlock by locking in a predefined order</a>  </td>
+<td>Four conditions are required for deadlock to occur:
+1.Mutual exclusion
+2.Hold and wait
+3.No preemption
+4.Circular wait<br>
+Deadlock needs all four conditions, so preventing deadlock requires preventing any one of the four conditions. One simple solution is to lock the mutexes in a predefined order, which prevents circular wait.</td>
+</tr>
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/CON36-C.+Wrap+functions+that+can+spuriously+wake+up+in+a+loop" target="_blank">CON36-C. Wrap functions that can spuriously wake up in a loop</a>  </td>
+<td></td>
+</tr>
+
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/CON37-C.+Do+not+call+signal%28%29+in+a+multithreaded+program" target="_blank">CON37-C. Do not call signal() in a multithreaded program</a>  </td>
+<td></td>
+</tr>
+
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/CON38-C.+Preserve+thread+safety+and+liveness+when+using+condition+variables" target="_blank">CON38-C. Preserve thread safety and liveness when using condition variables</a>  </td>
+<td></td>
+</tr>
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/CON39-C.+Do+not+join+or+detach+a+thread+that+was+previously+joined+or+detached" target="_blank">CON39-C. Do not join or detach a thread that was previously joined or detached</a>  </td>
+<td></td>
+</tr>
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/CON40-C.+Do+not+refer+to+an+atomic+variable+twice+in+an+expression" target="_blank">CON40-C. Do not refer to an atomic variable twice in an expression</a>  </td>
+<td></td>
+</tr>
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/CON41-C.+Wrap+functions+that+can+fail+spuriously+in+a+loop" target="_blank">CON41-C. Wrap functions that can fail spuriously in a loop</a>  </td>
+<td></td>
+</tr>
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/CON42-C.++Don%27t+allow+attackers+to+influence+environment+variables+that+control+concurrency+parameters" target="_blank">CON42-C. Don't allow attackers to influence environment variables that control concurrency parameters</a>  </td>
+<td></td>
+</tr>
+
+<tr>
+<td> <a href= "https://wiki.sei.cmu.edu/confluence/display/c/CON43-C.+Do+not+allow+data+races+in+multithreaded+code" target="_blank">CON43-C. Do not allow data races in multithreaded code</a>  </td>
 <td></td>
 </tr>
 </table>
